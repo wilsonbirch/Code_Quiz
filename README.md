@@ -1,4 +1,4 @@
-This repository will hold my submission for the Carleton Coding Bootcamp Homework 4 assignment to create a coding quiz. The initial README outlining the homework is shown below
+This repository will hold my submission for the Carleton Coding Bootcamp Homework 4 assignment to create a coding quiz. The initial README outlining the homework is shown below. Link to the feployed site can be found here: https://wilsonbirch.github.io/HW4_Code_Quiz/
 
 # 04 Web APIs: Code Quiz
 
