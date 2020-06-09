@@ -1,6 +1,6 @@
 // create all variables needed for the script including start quiz elements, count, and element creators
 var startQuizEl = document.querySelector("#startQuiz");
-var count = 60;
+var counter = 60;
 var body = document.body;
 
 const myQuestions = ["Inside which HTML element do we put the JavaScript?", "How is a function in Javascript created?","Javascript is primarily used for?" ]
@@ -11,81 +11,9 @@ answers [2] = new Array ("Defines the content of a webpage","Specifies the layou
 const correctAnswer = ["b","a","c"]
 
 
-/* const answers = [
-    { { 
-
-        a:"<js>", 
-        b:"<script>", 
-        c:"<scr>", 
-        d:"<java>"
-    },
-     {
-        
-        a:"function myFunction()", 
-        b:"function:myFunction()", 
-        c:"function.myFunction()", 
-        d:"function~myFunction()"
-
-    },
-     {
-
-        a:"Defines the content of a webpage", 
-        b:"Specifies the layout and style of a webpage", 
-        c:"Set the behaviour of a webpage", 
-        d:"Creating a database for a webpage"
-    },
-}
-
-    ] */
-
-/* const myQuestions = [
-    {
-      question: "Inside which HTML element do we put the JavaScript?",
-      answers: {
-        a: "<div>",
-        b: "<article",
-        c: "<script>",
-        d: "<js>"
-      },
-      correctAnswer: "c"
-    },
-    {
-      question: "How is a function in Javascript created?",
-      answers: {
-        a: "function myFunction()",
-        b: "function:myFunction()",
-        c: "function.myFunction()",
-        d: "function~myFunction()"
-      },
-      correctAnswer: "a"
-    },
-    {
-      question: "Javascript is primarily used for?",
-      answers: {
-        a: "Defines the content of a webpage",
-        b: "Specifies the layout and style of a webpage",
-        c: "Set the behaviour of a webpage",
-        d: "Creating a database for a webpage"
-      },
-      correctAnswer: "c"
-    },
-    //{
-    //    question: "",
-    //    answers: {
-    //      a: "",
-    //      b: "",
-    //      c: "",
-    //      d: ""
-    //    },
-    //    correctAnswer: "d"
-    //  }
-
-  ];
- */
-
 function runQuiz(event){
 
-    if (count>0){
+    if (counter>0){
 
         //create timer div once timer begins
         var newRow = document.createElement("div");
@@ -99,11 +27,28 @@ function runQuiz(event){
         newRow.appendChild(bodyTimer);
         bodyTimer.setAttribute("class", "col-sm-2 card text-white text-center bg-dark mb-3");
         bodyTimer.setAttribute("style", "margin-top: 20px");
-        bodyTimer.textContent = ("Time left: "+count);
+        bodyTimer.textContent = ("Time left: "+counter)
+        var interval = setInterval(function() {
+            counter--;
+            // Display 'counter' wherever you want to display it.
+            if (counter <= 0) {
+                     clearInterval(interval);
+                     bodyTimer.textContent = ("Time's up!");  
+                     
+                return;
+            }else{
+                $('#time').text(counter);
+              console.log("Timer --> " + counter);
+              counter.addEventListener("change", bodyTimer.textContent = ("Time left: "+counter))
+            }
+        }, 1000);
+        
 
         var rightSpace = document.createElement("div");
         newRow.appendChild(rightSpace);
         rightSpace.setAttribute("class", "col-sm-5")
+
+
 
         for (i=0; i<=myQuestions.length;) {
 
@@ -118,17 +63,47 @@ function runQuiz(event){
             console.log(myQuestions[i])
             cardTitle.textContent = (myQuestions[i]);
             
-            var answerListEl = document.createElement ("ul");
-            var answer1 = document.createElement("li");
-            var answer2 = document.createElement("li");
-            var answer3 = document.createElement("li");
-            var answer4 = document.createElement("li");
-            cardBody.appendChild(answerListEl);
-            answerListEl.setAttribute("style", "list-style-type:none")
-            answerListEl.appendChild(answer1);
-            answerListEl.appendChild(answer2);
-            answerListEl.appendChild(answer3);
-            answerListEl.appendChild(answer4);
+            var answerContainer = document.createElement("container");
+            cardBody.appendChild(answerContainer);
+            answerContainer.setAttribute("class", "text-center");
+
+            var answerRow1 = document.createElement("div");
+            var answer1 = document.createElement("div");
+            answerRow1.setAttribute ("class", "row");
+            answerRow1.setAttribute ("style", "margin-top: 10px; margin-bottom: 10px");
+            answerContainer.appendChild(answerRow1);
+            answerRow1.appendChild(answer1);
+
+            var answerRow2 = document.createElement("div");
+            var answer2 = document.createElement("div");
+            answerRow2.setAttribute ("class", "row");
+            answerRow2.setAttribute ("style", "margin-top: 10px; margin-bottom: 10px");
+            answerContainer.appendChild(answerRow2);
+            answerRow2.appendChild(answer2);
+
+            var answerRow3 = document.createElement("div");
+            var answer3 = document.createElement("div");
+            answerRow3.setAttribute ("class", "row");
+            answerRow3.setAttribute ("style", "margin-top: 10px; margin-bottom: 10px");
+            answerContainer.appendChild(answerRow3);
+            answerRow3.appendChild(answer3);
+
+            var answerRow4 = document.createElement("div");
+            var answer4 = document.createElement("div");
+            answerRow4.setAttribute ("class", "row");
+            answerRow4.setAttribute ("style", "margin-top: 10px; margin-bottom: 10px");
+            answerContainer.appendChild(answerRow4);
+            answerRow4.appendChild(answer4);
+
+            
+            answer1.setAttribute("type", "button");
+            answer2.setAttribute("type", "button");
+            answer3.setAttribute("type", "button");
+            answer4.setAttribute("type", "button");
+            answer1.setAttribute("class", "btn btn-outline-dark btn-sm ");
+            answer2.setAttribute("class", "btn btn-outline-dark btn-sm ");
+            answer3.setAttribute("class", "btn btn-outline-dark btn-sm ");
+            answer4.setAttribute("class", "btn btn-outline-dark btn-sm ");
             answer1.textContent = answers[i][0];
             answer2.textContent = answers[i][1];
             answer3.textContent = answers[i][2];
