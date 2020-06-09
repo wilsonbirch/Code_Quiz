@@ -10,25 +10,36 @@
 </head>
 <body>
     
-    <!--main card for quiz questions-->
-    <div class="card text-center" style="margin-top: 200px; margin-right: 5rem; margin-left: 5rem;">
+    <div class ="row">
 
-        <!--card header-->
-        <div class="card-header">
-          Code Quiz
+        <div class = "col-sm-1"></div>
+
+        <div class="col-sm-10">
+        <!--main card for quiz questions-->
+        <div class="card text-center" style="margin-top: 200px">
+
+            <!--card header-->
+            <div class="card-header">
+            Code Quiz
+            </div>
+
+            <!--card body which will be manipulated by javascript to show the questions-->
+            <div class="card-body">
+                <h5 class="card-title">Coding Quiz Challenge</h5>
+                <p class="card-text">Try to answer the following questions about javascript fundamentals! Once you start the quiz you will have 60 seconds, each correct answer is 5 points, each incorrect answer will take 10 seconds off the timer, if you do not finish all the questions in time -5 points will be deducted from you score. Ready to play?</p>
+                <a class="btn btn-light" id ="startQuiz">Start quiz</a>
+            </div>
         </div>
-
-        <!--card body which will be manipulated by javascript to show the questions-->
-        <div class="card-body">
-          <h5 class="card-title">Coding Quiz Challenge</h5>
-          <p class="card-text">Try to answer the following questions about javascript fundamentals! Once you start the quiz you will have 60 seconds, each correct answer is 5 points, each incorrect answer will take 10 seconds off the timer, if you do not finish all the questions in time -5 points will be deducted from you score. Ready to play?</p>
-          <a class="btn btn-light" id ="startQuiz">Start quiz</a>
+        
         </div>
-      </div>
+        <div class = "col-sm-1"></div>
+    </div>
 
+      
 
 
     <!--Bootstrap components and script file linked-->
+ 
     <script src="./script.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
