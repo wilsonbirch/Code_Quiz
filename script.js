@@ -1,6 +1,6 @@
 // create all variables needed for the script including start quiz elements, count, and element creators
 var startQuizEl = document.querySelector("#startQuiz");
-var counter = 60;
+var counter = 5;
 var body = document.body;
 var score = 0;
 i=0;
@@ -42,12 +42,20 @@ function runQuiz(event){
                     
                      clearInterval(interval);
                      bodyTimer.textContent = ("Time's up!")
+                     var finalScore = score+counter;
+                     counter==-1;
+                     cardTitle.textContent = "";
+                     answerContainer.removeChild(answerRow1);
+                     answerContainer.removeChild(answerRow2);
+                     answerContainer.removeChild(answerRow3);
+                     answerContainer.removeChild(answerRow4);
+                     bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
+                     console.log(counter);
                      
                      
                 return;
             }else if (i===6){
-
-                console.log("completed")
+                return;
 
             }else{
                 $('#time').text(counter);
@@ -125,16 +133,17 @@ function runQuiz(event){
             answer3.textContent = answers[i][2];
             answer4.textContent = answers[i][3];
 
+            //When the top button is pressed, userAnswer is given a string value of a and compared to the answer array
             btn1.addEventListener("click", function(){
                 var userAnswer = "a";
                 
+                //if they correspond, the user gets 5 points
                 if (userAnswer === correctAnswer[i]){
                     score = score+5;
                     i++;
+                    console.log("correct")
 
                     if (i===6){
-                        
-
                         var finalScore = score+counter;
                         counter==-1;
                         answerContainer.removeChild(answerRow1);
@@ -142,154 +151,8 @@ function runQuiz(event){
                         answerContainer.removeChild(answerRow3);
                         answerContainer.removeChild(answerRow4);
                         bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
-                        var userEntryForm = document.createElement("form");
-                        userEntryForm.setAttribute("id", "userEntryForm");
-                        userEntryForm.setAttribute("method", "POST");
-                        cardBody.appendChild(userEntryForm);
-                        var newUser = document.createElement("div");
-                        newUser.setAttribute("class", "form group");
-                        userEntryForm.appendChild(newUser);
-                        var userLabel = document.createElement("label")
-                        userLabel.setAttribute("for", "User name input")
-                        userLabel.textContent = "Submit your initials to see your score vs your peers!";
-                        newUser.appendChild(userLabel);
-                        var userInput = document.createElement("input");
-                        userInput.setAttribute("type", "text");
-                        userInput.setAttribute("class", "form-control");
-                        userInput.setAttribute("id", "userInputForm");
-                        userInput.setAttribute("name", "userInputForm");
-                        userInput.setAttribute("placeholder", "Your initials here")
-                        userInput.setAttribute("style", "margin-top: 5px")
-                        newUser.appendChild(userInput);
-                        cardTitle.textContent = "";
+                        console.log(counter);
 
-                        var userEntryForm = document.querySelector("#userEntryForm")
-                        var userInputFormID = document.querySelector("#userInputForm");
-
-                        var highScoreList = document.createElement("u1");
-                        highScoreList.setAttribute("class", "col");
-                        highScoreList.setAttribute("id", "highScoreList");
-                        answerContainer.appendChild(highScoreList);
-                        var highScoreListCount = document.querySelector("#score-counter");
-                        var highScores = [];
-                        j=0;
-
-                        init();
-
-                        function renderHighScores() {
-                            
-                            highScoreList.innerHTML = "";
-                            highScoreListCount.textContent = highScores.length;
-
-                          
-                            // Render a new li for each high score
-                            for (var j = 0; j < highScores.length; j++) {
-                              var highScores = highScores[j];
-                          
-                              var scoreEntry = document.createElement("li")
-                              scoreEntry.textContent = highScores;
-                              scoreEntry.setAttribute("data-index", i);
-                              
-                              highScoreList.appendChild(scoreEntry);
-
-                            }
-                          }
-
-                          function init() {
-
-                            var highScores = [];
-                            var storedHighScores = JSON.parse(localStorage.getItem("High Scores"));
-                          
-                            // If todos were retrieved from localStorage, update the todos array to it
-                            if (storedHighScores !== null) {
-                              highScores = storedHighScores;
-                            }
-                          
-                            renderHighScores();
-                            }
-
-                            function storeHighScores() {
-                                localStorage.setItem("High Scores", JSON.stringify(highScores));
-                              }
-
-                                userEntryForm.addEventListener("submit", function (event) {
-                                event.preventDefault();
-                              
-                                var highScores = [];
-                                var userInitials = userInputFormID.value.trim();
-                              
-                                // Return from function early if submitted todoText is blank
-                                if (userInitials === "") {
-                                  return;
-                                }
-                              
-                                var newHighScoreEntry = userInitials+ ": "+ finalScore
-                                highScores.push(newHighScoreEntry);
-                                userInputFormID.value = "";
-                              
-
-                                storeHighScores();
-                                renderHighScores();
-                              });
-
-/*                         userEntryForm.addEventListener("submit", function (event) {
-                            event.preventDefault();
-                            answerContainer.removeAttribute("class", "text-center");
-                            cardBody.removeAttribute("class", "text-center")
-                            cardBody.removeChild(userEntryForm);
-                            var j=0;
-                            var highScores = [];
-
-                            var userInitials = userInputFormID.value.trim();
-                            if (userInitials === ""){
-                                userInitials = "No Entry";
-                            }
-
-                            var highScoreList = document.createElement("u1");
-                            highScoreList.setAttribute("class", "col");
-                            highScoreList.setAttribute("id", "highScoreList");
-                            answerContainer.appendChild(highScoreList);
-
-                            init();
-
-                            function renderHighScores() {
-                                
-                                highScoreList.innerHTML = "";
-                              
-                                // Render a new li for each high score
-                                for (var j = 0; j <= highScores.length; j++) {
-                                  var highScores = highScores[j];
-                              
-                                  var scoreEntry = document.createElement("li")
-                                  scoreEntry.setAttribute("data-index", i);
-                                  var newHighScoreEntry = userInitials+ ": "+ finalScore
-                                  scoreEntry.textContent = newHighScoreEntry;
-                                  highScoreList.appendChild(scoreEntry);
-
-                                }
-                              }
-
-                              function init() {
-
-                                var storedHighScores = JSON.parse(localStorage.getItem("High Scores"));
-                              
-                                if (storedHighScores !== null) {
-                                  highScores = storedHighScores;
-                                }
-                            
-                                renderHighScores();
-                              }
-
-                              function storeHighScores() {
-                                // Stringify and set "todos" key in localStorage to todos array
-                                localStorage.setItem("High Scores", JSON.stringify(storedHighScores));
-                              }
-
-                              storeHighScores();
-                              renderHighScores();
-                            
-
-                        }) */
                     }
 
                     cardTitle.textContent = (myQuestions[i]);
@@ -299,10 +162,13 @@ function runQuiz(event){
                     answer4.textContent = answers[i][3];
                     console.log(i);
                     userAnswer = "e"
-                
-                }else{
+
+                 
+                } else {
                     counter = counter - 10;
                     i++;
+                    console.log("incorrect");
+
                     if (i===6){
                         var finalScore = score+counter;
                         counter==-1;
@@ -313,6 +179,7 @@ function runQuiz(event){
                         bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
 
                     }
+
                     cardTitle.textContent = (myQuestions[i]);
                     answer1.textContent = answers[i][0];
                     answer2.textContent = answers[i][1];
@@ -328,6 +195,8 @@ function runQuiz(event){
                 if (userAnswer === correctAnswer[i]){
                     score = score+5;
                     i++;
+                    console.log("correct");
+
                     if (i===6){
                         var finalScore = score+counter;
                         counter==-1;
@@ -348,6 +217,8 @@ function runQuiz(event){
                 }else{
                     counter = counter - 10;
                     i++;
+                    console.log("incorrect");
+
                     if (i===6){
                         var finalScore = score+counter;
                         counter==-1;
@@ -357,6 +228,7 @@ function runQuiz(event){
                         answerContainer.removeChild(answerRow4);
                         bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
                     }
+
                     cardTitle.textContent = (myQuestions[i]);
                     answer1.textContent = answers[i][0];
                     answer2.textContent = answers[i][1];
@@ -372,6 +244,8 @@ function runQuiz(event){
                 if (userAnswer === correctAnswer[i]){
                     score = score+5;
                     i++;
+                    console.log("correct");
+
                     if (i===6){
                         var finalScore = score+counter;
                         counter==-1;
@@ -392,6 +266,7 @@ function runQuiz(event){
                 }else{
                     counter = counter - 10;
                     i++;
+                    console.log("incorrect");
                     if (i===6){
                         var finalScore = score+counter;
                         counter==-1;
@@ -416,6 +291,7 @@ function runQuiz(event){
                 if (userAnswer === correctAnswer[i]){
                     score = score+5;
                     i++;
+                    console.log("correct");
                     if (i===6){
                         var finalScore = score+counter;
                         counter==-1;
@@ -436,6 +312,7 @@ function runQuiz(event){
                 }else{
                     counter = counter - 10;
                     i++;
+                    console.log("incorrect");
                     if (i===6){
                         var finalScore = score+counter;
                         counter==-1;
@@ -460,6 +337,8 @@ function runQuiz(event){
     } 
 
 }
+
+
 
 startQuizEl.addEventListener("click", runQuiz);
 
