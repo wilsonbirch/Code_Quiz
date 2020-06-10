@@ -38,15 +38,20 @@ function runQuiz(event){
         var interval = setInterval(function() {
             counter--;
             // Display 'counter' wherever you want to display it.
-            if (counter <= 0) {
+            if (counter === 0) {
+                    
                      clearInterval(interval);
-                     bodyTimer.textContent = ("Time's up!");  
+                     bodyTimer.textContent = ("Time's up!")
+                     
                      
                 return;
+            }else if (i===6){
+
+                console.log("completed")
+
             }else{
                 $('#time').text(counter);
-              //console.log("Timer --> " + counter);
-              counter.addEventListener("change", bodyTimer.textContent = ("Time left: "+counter));
+                counter.addEventListener("change", bodyTimer.textContent = ("Time left: "+counter));
             }
         
         }, 1000);
@@ -128,7 +133,163 @@ function runQuiz(event){
                     i++;
 
                     if (i===6){
-                        console.log(i)
+                        
+
+                        var finalScore = score+counter;
+                        counter==-1;
+                        answerContainer.removeChild(answerRow1);
+                        answerContainer.removeChild(answerRow2);
+                        answerContainer.removeChild(answerRow3);
+                        answerContainer.removeChild(answerRow4);
+                        bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
+                        var userEntryForm = document.createElement("form");
+                        userEntryForm.setAttribute("id", "userEntryForm");
+                        userEntryForm.setAttribute("method", "POST");
+                        cardBody.appendChild(userEntryForm);
+                        var newUser = document.createElement("div");
+                        newUser.setAttribute("class", "form group");
+                        userEntryForm.appendChild(newUser);
+                        var userLabel = document.createElement("label")
+                        userLabel.setAttribute("for", "User name input")
+                        userLabel.textContent = "Submit your initials to see your score vs your peers!";
+                        newUser.appendChild(userLabel);
+                        var userInput = document.createElement("input");
+                        userInput.setAttribute("type", "text");
+                        userInput.setAttribute("class", "form-control");
+                        userInput.setAttribute("id", "userInputForm");
+                        userInput.setAttribute("name", "userInputForm");
+                        userInput.setAttribute("placeholder", "Your initials here")
+                        userInput.setAttribute("style", "margin-top: 5px")
+                        newUser.appendChild(userInput);
+                        cardTitle.textContent = "";
+
+                        var userEntryForm = document.querySelector("#userEntryForm")
+                        var userInputFormID = document.querySelector("#userInputForm");
+
+                        var highScoreList = document.createElement("u1");
+                        highScoreList.setAttribute("class", "col");
+                        highScoreList.setAttribute("id", "highScoreList");
+                        answerContainer.appendChild(highScoreList);
+                        var highScoreListCount = document.querySelector("#score-counter");
+                        var highScores = [];
+                        j=0;
+
+                        init();
+
+                        function renderHighScores() {
+                            
+                            highScoreList.innerHTML = "";
+                            highScoreListCount.textContent = highScores.length;
+
+                          
+                            // Render a new li for each high score
+                            for (var j = 0; j < highScores.length; j++) {
+                              var highScores = highScores[j];
+                          
+                              var scoreEntry = document.createElement("li")
+                              scoreEntry.textContent = highScores;
+                              scoreEntry.setAttribute("data-index", i);
+                              
+                              highScoreList.appendChild(scoreEntry);
+
+                            }
+                          }
+
+                          function init() {
+
+                            var highScores = [];
+                            var storedHighScores = JSON.parse(localStorage.getItem("High Scores"));
+                          
+                            // If todos were retrieved from localStorage, update the todos array to it
+                            if (storedHighScores !== null) {
+                              highScores = storedHighScores;
+                            }
+                          
+                            renderHighScores();
+                            }
+
+                            function storeHighScores() {
+                                localStorage.setItem("High Scores", JSON.stringify(highScores));
+                              }
+
+                                userEntryForm.addEventListener("submit", function (event) {
+                                event.preventDefault();
+                              
+                                var highScores = [];
+                                var userInitials = userInputFormID.value.trim();
+                              
+                                // Return from function early if submitted todoText is blank
+                                if (userInitials === "") {
+                                  return;
+                                }
+                              
+                                var newHighScoreEntry = userInitials+ ": "+ finalScore
+                                highScores.push(newHighScoreEntry);
+                                userInputFormID.value = "";
+                              
+
+                                storeHighScores();
+                                renderHighScores();
+                              });
+
+/*                         userEntryForm.addEventListener("submit", function (event) {
+                            event.preventDefault();
+                            answerContainer.removeAttribute("class", "text-center");
+                            cardBody.removeAttribute("class", "text-center")
+                            cardBody.removeChild(userEntryForm);
+                            var j=0;
+                            var highScores = [];
+
+                            var userInitials = userInputFormID.value.trim();
+                            if (userInitials === ""){
+                                userInitials = "No Entry";
+                            }
+
+                            var highScoreList = document.createElement("u1");
+                            highScoreList.setAttribute("class", "col");
+                            highScoreList.setAttribute("id", "highScoreList");
+                            answerContainer.appendChild(highScoreList);
+
+                            init();
+
+                            function renderHighScores() {
+                                
+                                highScoreList.innerHTML = "";
+                              
+                                // Render a new li for each high score
+                                for (var j = 0; j <= highScores.length; j++) {
+                                  var highScores = highScores[j];
+                              
+                                  var scoreEntry = document.createElement("li")
+                                  scoreEntry.setAttribute("data-index", i);
+                                  var newHighScoreEntry = userInitials+ ": "+ finalScore
+                                  scoreEntry.textContent = newHighScoreEntry;
+                                  highScoreList.appendChild(scoreEntry);
+
+                                }
+                              }
+
+                              function init() {
+
+                                var storedHighScores = JSON.parse(localStorage.getItem("High Scores"));
+                              
+                                if (storedHighScores !== null) {
+                                  highScores = storedHighScores;
+                                }
+                            
+                                renderHighScores();
+                              }
+
+                              function storeHighScores() {
+                                // Stringify and set "todos" key in localStorage to todos array
+                                localStorage.setItem("High Scores", JSON.stringify(storedHighScores));
+                              }
+
+                              storeHighScores();
+                              renderHighScores();
+                            
+
+                        }) */
                     }
 
                     cardTitle.textContent = (myQuestions[i]);
@@ -143,7 +304,14 @@ function runQuiz(event){
                     counter = counter - 10;
                     i++;
                     if (i===6){
-                        console.log(i)
+                        var finalScore = score+counter;
+                        counter==-1;
+                        answerContainer.removeChild(answerRow1);
+                        answerContainer.removeChild(answerRow2);
+                        answerContainer.removeChild(answerRow3);
+                        answerContainer.removeChild(answerRow4);
+                        bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
+
                     }
                     cardTitle.textContent = (myQuestions[i]);
                     answer1.textContent = answers[i][0];
@@ -161,7 +329,13 @@ function runQuiz(event){
                     score = score+5;
                     i++;
                     if (i===6){
-                        console.log(i)
+                        var finalScore = score+counter;
+                        counter==-1;
+                        answerContainer.removeChild(answerRow1);
+                        answerContainer.removeChild(answerRow2);
+                        answerContainer.removeChild(answerRow3);
+                        answerContainer.removeChild(answerRow4);
+                        bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
                     }
                     cardTitle.textContent = (myQuestions[i]);
                     answer1.textContent = answers[i][0];
@@ -175,7 +349,13 @@ function runQuiz(event){
                     counter = counter - 10;
                     i++;
                     if (i===6){
-                        console.log(i)
+                        var finalScore = score+counter;
+                        counter==-1;
+                        answerContainer.removeChild(answerRow1);
+                        answerContainer.removeChild(answerRow2);
+                        answerContainer.removeChild(answerRow3);
+                        answerContainer.removeChild(answerRow4);
+                        bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
                     }
                     cardTitle.textContent = (myQuestions[i]);
                     answer1.textContent = answers[i][0];
@@ -193,7 +373,13 @@ function runQuiz(event){
                     score = score+5;
                     i++;
                     if (i===6){
-                        console.log(i)
+                        var finalScore = score+counter;
+                        counter==-1;
+                        answerContainer.removeChild(answerRow1);
+                        answerContainer.removeChild(answerRow2);
+                        answerContainer.removeChild(answerRow3);
+                        answerContainer.removeChild(answerRow4);
+                        bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
                     }
                     cardTitle.textContent = (myQuestions[i]);
                     answer1.textContent = answers[i][0];
@@ -207,7 +393,13 @@ function runQuiz(event){
                     counter = counter - 10;
                     i++;
                     if (i===6){
-                        console.log(i)
+                        var finalScore = score+counter;
+                        counter==-1;
+                        answerContainer.removeChild(answerRow1);
+                        answerContainer.removeChild(answerRow2);
+                        answerContainer.removeChild(answerRow3);
+                        answerContainer.removeChild(answerRow4);
+                        bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
                     }
                     cardTitle.textContent = (myQuestions[i]);
                     answer1.textContent = answers[i][0];
@@ -225,7 +417,13 @@ function runQuiz(event){
                     score = score+5;
                     i++;
                     if (i===6){
-                        console.log(i)
+                        var finalScore = score+counter;
+                        counter==-1;
+                        answerContainer.removeChild(answerRow1);
+                        answerContainer.removeChild(answerRow2);
+                        answerContainer.removeChild(answerRow3);
+                        answerContainer.removeChild(answerRow4);
+                        bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
                     }
                     cardTitle.textContent = (myQuestions[i]);
                     answer1.textContent = answers[i][0];
@@ -239,7 +437,13 @@ function runQuiz(event){
                     counter = counter - 10;
                     i++;
                     if (i===6){
-                        console.log(i)
+                        var finalScore = score+counter;
+                        counter==-1;
+                        answerContainer.removeChild(answerRow1);
+                        answerContainer.removeChild(answerRow2);
+                        answerContainer.removeChild(answerRow3);
+                        answerContainer.removeChild(answerRow4);
+                        bodyTimer.textContent = ("Completed! Your Score: "+finalScore);
                     }
                     cardTitle.textContent = (myQuestions[i]);
                     answer1.textContent = answers[i][0];
