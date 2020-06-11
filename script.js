@@ -198,46 +198,21 @@ function runQuiz(event){
                         var highScoreForm = document.querySelector("#userEntryForm");
                         var highScoreList = document.querySelector("#highScoreList");
                         
-                        var highScores = {initials: initials ,score: score};
-                        j=0;
+                        userEntryForm.addEventListener("submit", function (event) {
+                            event.preventDefault();
+                            var  writeInitials = highScoreInput;
+                            var li = document.createElement("li");
+                            li.textContent = writeInitials+": "+ finalScore;
+                            li.setAttribute("data-index", j);
+                            highScoreList.appendChild(li);
+
+
                         
-                        init();
-                        
-                        function renderHighScores(){
-                            highScoreList.innerHTML = "";
-                        
-                            for (var j = 0; j < highscores.length; j++) {
-                                var  writeInitials = highScores.initials[j] 
-                                var  writeScore = highScores.score[j] 
-                            
-                                var li = document.createElement("li");
-                                li.textContent = writeInitials+": "+ writeScore;
-                                li.setAttribute("data-index", j);
-                        
-                                highScoreList.appendChild(li);
-                              }
-                            }
-                        
-                        
-                        function init() {
-                        
-                            var storedHighScores = JSON.parse(localStorage.getItem("High Scores"));
-                        
-                            if (storedHighScores !== null) {
-                              highScores = storedHighScores;
-                            }
-                        
-                            renderHighScores();
-                        }
-                        
-                        function storeHighScores() {
+/*                         function storeHighScores() {
                         
                             localStorage.setItem("High Scores", JSON.stringify(highScores));
                         
-                        }
-                        
-                        userEntryForm.addEventListener("submit", function (event) {
-                            event.preventDefault();
+                        } */
                         
                             highScores.initials = userInputForm.value.trim();
                             highScores.score = finalScore;
@@ -247,11 +222,8 @@ function runQuiz(event){
                                 return;
                             }
                         
-                            storeHighScores();
-                            renderHighScores();
                         });
-                        
-
+                    
                     }
 
                     //if there are more questions left, write them to the DOM
